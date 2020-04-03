@@ -1,0 +1,43 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+
+  flightmanager:
+    image: flight-manager
+    build: ./shpl-flight-manager
+    ports:
+      - 4000:80
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+
+  
+  bookingmanager:
+    image: booking-manager
+    build: ./shpl-booking-manager
+    ports:
+      - 5000:80
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
