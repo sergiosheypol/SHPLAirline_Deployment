@@ -41,3 +41,9 @@ services:
       - mongodb
     depends_on:
       - mongodb
+  
+  bff:
+    image: bff
+    build: ./shpl-bff
+    ports:
+      - 3000:80
